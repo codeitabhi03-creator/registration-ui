@@ -1,15 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    label { font-weight: bold; }
+    input { width: 200px; padding: 6px; margin-top: 5px; margin-bottom: 15px; }
+    button { padding: 8px 12px; cursor: pointer; }
+    .msg { margin-top: 10px; font-size: 14px; }
+  </style>
+</head>
 <body>
 
-<h3>Registration</h3>
+<div id="step1">
+  <h3>Registration</h3>
+  <label>Mobile Number:</label><br>
+  <input type="text" id="mobile" placeholder="10-digit mobile"><br>
+  <button onclick="sendOtp()">Send OTP</button>
+  <div id="msg1" class="msg"></div>
+</div>
 
-<label>Mobile Number:</label><br>
-<input type="text" id="mobile"><br><br>
+<div id="step2" style="display:none;">
+  <h3>Verify OTP</h3>
+  <label>Enter OTP:</label><br>
+  <input type="text" id="otp" placeholder="6-digit OTP"><br>
+  <button onclick="verifyOtp()">Verify</button>
+  <button onclick="resendOtp()">Resend OTP</button>
+  <div id="msg2" class="msg"></div>
+</div>
 
-<button onclick="alert('Mobile submitted: ' + document.getElementById('mobile').value)">
-  Submit
-</button>
+<script>
+  // change to your backend URL when deployed
+  const apiBase = "http://localhost:8080/register";
 
-</body>
-</html>
+  async function sendOtp() {
+    const mobile = document.getElementById("mobile").value;
+
+    if (!/^[0-9]{10}$/.test(mobile)) {
+      document.getElementById("msg1").innerText = "Enter valid 10-digit mobil
